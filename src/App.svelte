@@ -8,20 +8,21 @@
     };
 	let isLoading = true;
 
-    // Simulate loading delay (e.g., for fetching data or content)
     setTimeout(() => {
         isLoading = false;
-    }, 5000); // 3-second delay for demo purposes
+    }, 5000);
+
+    let menuOpen = false; 
 </script>
 
 <style>
     .loader {
-        position: fixed;      /* Fixes the div to the viewport */
-        top: 0;               /* Aligns the div to the top */
-        left: 0;              /* Aligns the div to the left */
-        width: 100vw;         /* Makes the div cover the full width of the viewport */
-        height: 100vh;        /* Makes the div cover the full height of the viewport */
-        background-color: rgba(0, 0, 0);  /* Optional: semi-transparent background */
+        position: fixed;      
+        top: 0;               
+        left: 0;           
+        width: 100vw;         
+        height: 100vh;      
+        background-color: rgba(0, 0, 0);
         z-index: 1000;   
     }
     .gif{
@@ -35,7 +36,6 @@
         display: none;
     }
 
-    /* Show content only when it's not loading */
     :global(.loaded) {
         display: block;
     }
@@ -153,12 +153,62 @@
     footer a:hover {
         text-decoration: underline;
     }
+    header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: #333;
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.menu-icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: none; /* Default: hidden */
+}
+
+nav {
+    display: flex;
+    gap: 1rem;
+}
+
+.menu {
+    display: none; 
+    flex-direction: column;
+    background: #444;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    padding: 1rem;
+    width: 200px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.menu.show {
+    display: flex; 
+    flex-direction: column;
+    background: rgba(49,49,49,1);
+    position: absolute;
+    top: 100%;
+    right: 0;
+    padding: 1rem;
+    width: 200px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
     @media (max-width: 768px) {
-        header {
-            flex-direction: column;
+        
+        .menu-icon {
+        display: flex; 
         }
 
+    nav {
+        display: none; 
+    }
         nav a {
             margin: 0.5rem 0;
         }
@@ -184,6 +234,12 @@
 {/if}
 <header>
     <img src='/logo_white.png' alt="Example Image" width="100" height="70" />
+    <button class="menu-icon" on:click={() => (menuOpen = !menuOpen)}>☰</button>
+    <nav class={`menu ${menuOpen ? 'show' : ''}`}>
+        {#each navItems as item}
+        <a href="#" aria-label="{item}">{item}</a>
+        {/each}
+    </nav>
     <nav>
         {#each navItems as item}
             <a href="#" aria-label="{item}">{item}</a>
